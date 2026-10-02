@@ -1,7 +1,7 @@
 # HotKey Attributes
 
 Instantly set attribute values on selected features using configurable
-keyboard shortcuts (keys **1–9**) — no more opening the attribute form
+keyboard shortcuts (keys **1–9**). No more opening the attribute form
 for repetitive classification work.
 
 ![HotKey Attributes icon](icon.png)
@@ -10,7 +10,7 @@ for repetitive classification work.
 
 Classifying a feature the usual way means: click it, open the
 **Attribute form**, find the right field with the mouse, open the
-dropdown, pick the value, close the form — 5 to 6 actions to write a
+dropdown, pick the value, close the form, 5 to 6 actions to write a
 single value. Multiply that by hundreds of features in a working
 session and the interface itself becomes the bottleneck, not the
 classification decision.
@@ -22,7 +22,7 @@ automatically if it isn't already.
 ## Features
 
 - Map up to **9 keyboard shortcuts**, each to any **field name** and
-  **value** you choose — fully configurable from a settings dialog,
+  **value** you choose, fully configurable from a settings dialog,
   no code editing required.
 - Works with any vector layer and any attribute field.
 - Bilingual interface (English / Portuguese), following QGIS's own
@@ -44,11 +44,11 @@ automatically if it isn't already.
    **Value** to write, and tick **Active**.
 3. Click **Save**.
 4. Select a feature on any editable layer and press the configured
-   key — the value is written straight into the field.
+   key. The value is written straight into the field.
 
 ## License
 
-Distributed under the GNU General Public License v3.0 — see
+Distributed under the GNU General Public License v3.0. See
 [LICENSE](LICENSE).
 
 ---
@@ -56,14 +56,14 @@ Distributed under the GNU General Public License v3.0 — see
 # HotKey Attributes (Português)
 
 Grava valores de atributo em feições selecionadas usando atalhos de
-teclado configuráveis (teclas **1 a 9**) — sem precisar abrir a janela
+teclado configuráveis (teclas **1 a 9**) sem precisar abrir a janela
 de atributos para trabalho repetitivo de classificação.
 
 ## Por quê
 
 Classificar uma feição do jeito tradicional exige: clicar nela, abrir
 a janela de **Atributos da feição**, localizar o campo certo com o
-mouse, abrir o menu suspenso, escolher o valor e fechar a janela — de
+mouse, abrir o menu suspenso, escolher o valor e fechar a janela, de
 5 a 6 ações para gravar um único valor. Multiplicado por centenas de
 feições numa sessão de trabalho, é a interface que vira o gargalo, não
 a decisão de classificação em si.
@@ -75,7 +75,7 @@ automaticamente, se ainda não estiver.
 ## Funcionalidades
 
 - Configure até **9 atalhos de teclado**, cada um apontando para
-  qualquer **campo** e **valor** que você escolher — tudo pela
+  qualquer **campo** e **valor** que você escolher, tudo pela
   interface, sem editar código.
 - Funciona com qualquer camada vetorial e qualquer campo de atributo.
 - Interface bilíngue (inglês / português), seguindo o idioma
@@ -98,9 +98,9 @@ automaticamente, se ainda não estiver.
    a ser gravado, e marque **Ativo**.
 3. Clique em **Salvar**.
 4. Selecione uma feição em qualquer camada editável e pressione a
-   tecla configurada — o valor é gravado direto no campo.
+   tecla configurada. O valor é gravado direto no campo.
 
 ## Licença
 
-Distribuído sob a GNU General Public License v3.0 — veja
+Distribuído sob a GNU General Public License v3.0. Veja
 [LICENSE](LICENSE).
