@@ -1,0 +1,6 @@
+1.0.0
+-----
+- First public release.
+- Configurable shortcuts (keys 1-9) mapping to any field/value.
+- Settings dialog, no code editing required.
+- Bilingual interface (English / Portuguese).
