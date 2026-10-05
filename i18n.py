@@ -57,12 +57,9 @@ STRINGS = {
 
 
 def _detect_lang():
-    try:
-        locale = QSettings().value("locale/userLocale", "en")
-        if locale and str(locale).lower().startswith("pt"):
-            return "pt"
-    except Exception:
-        pass
+    locale = QSettings().value("locale/userLocale", "en")
+    if locale and str(locale).lower().startswith("pt"):
+        return "pt"
     return "en"
 
 
