@@ -84,10 +84,10 @@ class HotkeyAttributes:
 
     def _open_config(self):
         dlg = ConfigDialog(self.mappings, self.iface.mainWindow())
-        if dlg.exec_():
+        if dlg.exec():
             self._save_mappings(dlg.get_mappings())
             self.iface.messageBar().pushMessage(
-                tr("app_title"), tr("config_saved"), level=Qgis.Success, duration=3,
+                tr("app_title"), tr("config_saved"), level=Qgis.MessageLevel.Success, duration=3,
             )
 
     # ---- core action -----------------------------------------------------------
@@ -97,7 +97,7 @@ class HotkeyAttributes:
         if not slot or not slot.get("enabled") or not slot.get("field"):
             self.iface.messageBar().pushMessage(
                 tr("app_title"), tr("key_not_configured").format(key=key),
-                level=Qgis.Warning, duration=3,
+                level=Qgis.MessageLevel.Warning, duration=3,
             )
             return
 
@@ -107,7 +107,7 @@ class HotkeyAttributes:
         layer = self.iface.activeLayer()
         if layer is None or not isinstance(layer, QgsVectorLayer):
             self.iface.messageBar().pushMessage(
-                tr("app_title"), tr("no_active_layer"), level=Qgis.Warning, duration=3,
+                tr("app_title"), tr("no_active_layer"), level=Qgis.MessageLevel.Warning, duration=3,
             )
             return
 
@@ -117,7 +117,7 @@ class HotkeyAttributes:
         feats = layer.selectedFeatures()
         if not feats:
             self.iface.messageBar().pushMessage(
-                tr("app_title"), tr("no_feature_selected"), level=Qgis.Warning, duration=3,
+                tr("app_title"), tr("no_feature_selected"), level=Qgis.MessageLevel.Warning, duration=3,
             )
             return
 
@@ -126,7 +126,7 @@ class HotkeyAttributes:
             self.iface.messageBar().pushMessage(
                 tr("app_title"),
                 tr("field_not_found").format(field=campo, layer=layer.name()),
-                level=Qgis.Critical, duration=4,
+                level=Qgis.MessageLevel.Critical, duration=4,
             )
             return
 
@@ -137,5 +137,5 @@ class HotkeyAttributes:
         self.iface.messageBar().pushMessage(
             tr("app_title"),
             tr("value_set").format(field=campo, value=valor, count=len(feats)),
-            level=Qgis.Success, duration=2,
+            level=Qgis.MessageLevel.Success, duration=2,
         )
