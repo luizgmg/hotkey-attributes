@@ -8,3 +8,8 @@
 1.0.1
 -----
 - Fixed a Bandit-flagged bare except/pass in language detection (i18n.py).
+
+1.0.2
+-----
+- Fixed 13 Qt6 compatibility warnings (scoped enums for Qt, QDialogButtonBox
+  and Qgis; renamed exec_() to exec()).
