@@ -4,3 +4,7 @@
 - Configurable shortcuts (keys 1-9) mapping to any field/value.
 - Settings dialog, no code editing required.
 - Bilingual interface (English / Portuguese).
+
+1.0.1
+-----
+- Fixed a Bandit-flagged bare except/pass in language detection (i18n.py).
