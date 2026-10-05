@@ -43,7 +43,7 @@ class ConfigDialog(QDialog):
             key = slot.get("key", str(row + 1))
 
             key_item = QTableWidgetItem(key)
-            key_item.setFlags(Qt.ItemIsEnabled)
+            key_item.setFlags(Qt.ItemFlag.ItemIsEnabled)
             self.table.setItem(row, 0, key_item)
 
             self.table.setItem(row, 1, QTableWidgetItem(slot.get("field", "")))
@@ -54,16 +54,16 @@ class ConfigDialog(QDialog):
             chk.setChecked(bool(slot.get("enabled", False)))
             chk_layout = QHBoxLayout(chk_widget)
             chk_layout.addWidget(chk)
-            chk_layout.setAlignment(Qt.AlignCenter)
+            chk_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
             chk_layout.setContentsMargins(0, 0, 0, 0)
             self.table.setCellWidget(row, 3, chk_widget)
             self._checkboxes.append(chk)
 
         layout.addWidget(self.table)
 
-        buttons = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
-        buttons.button(QDialogButtonBox.Save).setText(tr("btn_save"))
-        buttons.button(QDialogButtonBox.Cancel).setText(tr("btn_cancel"))
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
+        buttons.button(QDialogButtonBox.StandardButton.Save).setText(tr("btn_save"))
+        buttons.button(QDialogButtonBox.StandardButton.Cancel).setText(tr("btn_cancel"))
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
