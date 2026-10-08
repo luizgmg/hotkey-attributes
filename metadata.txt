@@ -1,8 +1,9 @@
 [general]
 name=HotKey Attributes
 qgisMinimumVersion=3.0
+qgisMaximumVersion=4.99
 description=Instantly set attribute values on selected features using configurable keyboard shortcuts (1-9). No more opening the attribute form for repetitive classification work.
-version=1.0.2
+version=1.0.3
 author=Luiz Gomes
 email=luizgmg@gmail.com
 about=HotKey Attributes lets you map any attribute field and value to keys 1-9 through a simple settings dialog, then apply them instantly by selecting a feature and pressing the key, with no attribute form and no mouse. Interface available in English and Portuguese (follows the QGIS locale). If a configured shortcut doesn't work, check whether the same key is already bound to a native QGIS shortcut. Depending on the QGIS version, the custom shortcut may or may not override the existing one. If it doesn't, you'll need to remove the conflicting native shortcut for HotKey Attributes to work. / HotKey Attributes permite associar qualquer campo e valor às teclas 1-9 por uma tela de configuração simples, aplicando-os instantaneamente ao selecionar uma feição e pressionar a tecla, sem janela de atributos e sem mouse. Interface disponível em inglês e português (segue o idioma do QGIS). Se um atalho configurado não funcionar, verifique se a mesma tecla já está associada a um atalho nativo do QGIS. Dependendo da versão do QGIS, o atalho personalizado pode ou não sobrescrever o atalho existente. Caso não sobrescreva, será necessário remover o atalho nativo conflitante para que o atalho do HotKey Attributes funcione.
