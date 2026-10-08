@@ -13,3 +13,7 @@
 -----
 - Fixed 13 Qt6 compatibility warnings (scoped enums for Qt, QDialogButtonBox
   and Qgis; renamed exec_() to exec()).
+
+1.0.3
+-----
+- Declared QGIS 4 compatibility (qgisMaximumVersion=4.99).
