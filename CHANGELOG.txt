@@ -17,3 +17,13 @@
 1.0.3
 -----
 - Declared QGIS 4 compatibility (qgisMaximumVersion=4.99).
+
+1.1.0
+-----
+- Shortcuts are no longer limited to the keys 1-9 or to 9 slots: add as many
+  as you need, each with any key or combination (e.g. F5, Ctrl+Shift+A),
+  chosen in the settings dialog ("Add shortcut" / ✕ buttons).
+- Shortcuts are re-registered as soon as settings are saved (no restart needed).
+- Warns when two active shortcuts use the same key.
+- QAction/QShortcut imported in a Qt5/Qt6-safe way.
+- Settings saved by earlier versions keep working.

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 HotKey Attributes
----------------
+-----------------
 Instantly write a value into an attribute field of the selected feature(s)
-by pressing a configurable keyboard shortcut (1-9) — no attribute form,
-no mouse.
+by pressing a configurable keyboard shortcut — no attribute form, no mouse.
 
-Field, value and which keys are active are all user-configurable through
-a settings dialog (Plugins > HotKey Attributes > Configure shortcuts...).
+Any number of shortcuts can be defined. Each one has its own key (any key or
+combination, e.g. 1, F5, Ctrl+Shift+A), field and value, all editable
+through a settings dialog (Plugins > HotKey Attributes > Configure shortcuts...).
 """
 
 import json
@@ -15,19 +15,20 @@ import os
 
 from qgis.PyQt.QtCore import QSettings
 from qgis.PyQt.QtGui import QIcon, QKeySequence
-from qgis.PyQt.QtWidgets import QAction, QShortcut
 from qgis.core import Qgis, QgsVectorLayer
+
+try:  # Qt6 (QGIS 4): QAction and QShortcut live in QtGui
+    from qgis.PyQt.QtGui import QAction, QShortcut
+except ImportError:  # Qt5 (QGIS 3): they live in QtWidgets
+    from qgis.PyQt.QtWidgets import QAction, QShortcut
 
 from .config_dialog import ConfigDialog
 from .i18n import tr
 
 SETTINGS_KEY = "HotkeyAttributes/mappings"
-NUM_SLOTS = 9
-
-DEFAULT_MAPPINGS = [
-    {"key": str(i + 1), "field": "", "value": "", "enabled": False}
-    for i in range(NUM_SLOTS)
-]
+# On a fresh install the dialog starts with nine inactive rows (keys 1-9).
+DEFAULT_KEYS = "123456789"
+PORTABLE = QKeySequence.SequenceFormat.PortableText
 
 
 class HotkeyAttributes:
@@ -45,40 +46,67 @@ class HotkeyAttributes:
         self._action.triggered.connect(self._open_config)
         self.iface.addPluginToMenu(tr("menu_title"), self._action)
         self.iface.addToolBarIcon(self._action)
-
-        for slot in self.mappings:
-            key = slot["key"]
-            sc = QShortcut(QKeySequence(key), self.iface.mainWindow())
-            sc.activated.connect(lambda k=key: self._apply(k))
-            self._shortcuts.append(sc)
+        self._register_shortcuts()
 
     def unload(self):
-        for sc in self._shortcuts:
-            sc.setEnabled(False)
-            sc.deleteLater()
-        self._shortcuts = []
-
+        self._clear_shortcuts()
         if self._action is not None:
             self.iface.removePluginMenu(tr("menu_title"), self._action)
             self.iface.removeToolBarIcon(self._action)
             self._action = None
 
+    # ---- shortcuts ---------------------------------------------------------------
+
+    def _clear_shortcuts(self):
+        for sc in self._shortcuts:
+            sc.setEnabled(False)
+            sc.deleteLater()
+        self._shortcuts = []
+
+    def _register_shortcuts(self):
+        """(Re)create one QShortcut per active slot, using the saved keys."""
+        self._clear_shortcuts()
+        for index, slot in enumerate(self.mappings):
+            if not (slot["enabled"] and slot["key"] and slot["field"]):
+                continue
+            sc = QShortcut(QKeySequence(slot["key"], PORTABLE), self.iface.mainWindow())
+            sc.activated.connect(lambda i=index: self._apply(i))
+            self._shortcuts.append(sc)
+
     # ---- persistence -------------------------------------------------------
+
+    @staticmethod
+    def _normalize(slot, index):
+        """Return a well-formed slot dict (tolerates settings saved by older versions)."""
+        if not isinstance(slot, dict):
+            slot = {}
+        key = slot.get("key")
+        if key is None:
+            key = str(index + 1)
+        return {
+            "key": str(key),
+            "field": str(slot.get("field", "")),
+            "value": str(slot.get("value", "")),
+            "enabled": bool(slot.get("enabled", False)),
+        }
 
     def _load_mappings(self):
         raw = QSettings().value(SETTINGS_KEY, None)
         if raw:
             try:
-                data = json.loads(raw)
-                if isinstance(data, list) and len(data) == NUM_SLOTS:
-                    return data
+                parsed = json.loads(raw)
             except (ValueError, TypeError):
-                pass
-        return [dict(d) for d in DEFAULT_MAPPINGS]
+                parsed = None
+            if isinstance(parsed, list):  # an empty list is a valid choice
+                return [self._normalize(m, i) for i, m in enumerate(parsed)]
+        return [
+            {"key": key, "field": "", "value": "", "enabled": False}
+            for key in DEFAULT_KEYS
+        ]
 
     def _save_mappings(self, mappings):
-        QSettings().setValue(SETTINGS_KEY, json.dumps(mappings))
-        self.mappings = mappings
+        self.mappings = [self._normalize(m, i) for i, m in enumerate(mappings)]
+        QSettings().setValue(SETTINGS_KEY, json.dumps(self.mappings))
 
     # ---- UI ------------------------------------------------------------------
 
@@ -86,23 +114,17 @@ class HotkeyAttributes:
         dlg = ConfigDialog(self.mappings, self.iface.mainWindow())
         if dlg.exec():
             self._save_mappings(dlg.get_mappings())
+            self._register_shortcuts()
             self.iface.messageBar().pushMessage(
                 tr("app_title"), tr("config_saved"), level=Qgis.MessageLevel.Success, duration=3,
             )
 
     # ---- core action -----------------------------------------------------------
 
-    def _apply(self, key):
-        slot = next((m for m in self.mappings if m["key"] == key), None)
-        if not slot or not slot.get("enabled") or not slot.get("field"):
-            self.iface.messageBar().pushMessage(
-                tr("app_title"), tr("key_not_configured").format(key=key),
-                level=Qgis.MessageLevel.Warning, duration=3,
-            )
-            return
-
+    def _apply(self, index):
+        slot = self.mappings[index]
         campo = slot["field"]
-        valor = slot.get("value", "")
+        valor = slot["value"]
 
         layer = self.iface.activeLayer()
         if layer is None or not isinstance(layer, QgsVectorLayer):
